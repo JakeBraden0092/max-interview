@@ -1,0 +1,277 @@
+# GraphQL Schema for Health Commerce API
+
+scalar DateTime
+scalar Upload
+
+# Directive for authenticated routes
+directive @auth on FIELD_DEFINITION
+
+# User
+type User {
+  id: ID!
+  email: String!
+  firstName: String
+  lastName: String
+  phone: String
+  birthDate: String
+  address: Address
+  profileCompleted: Boolean!
+  surveyCompleted: Boolean!
+  healthProfile: HealthProfile
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Address
+type Address {
+  id: ID!
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+  isDefault: Boolean!
+}
+
+# Health Profile from survey
+type HealthProfile {
+  id: ID!
+  user: User!
+  ageGroup: String
+  activityLevel: String
+  healthGoals: [String!]
+  sleepHours: Float
+  stressLevel: Int
+  diet: String
+  allergies: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Product
+type Product {
+  id: ID!
+  name: String!
+  description: String!
+  price: Float!
+  images: [String!]!
+  category: Category!
+  tags: [String!]!
+  ingredients: String
+  usage: String
+  benefits: [String!]
+  rating: Float
+  reviewCount: Int
+  reviews: [Review!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Product Category
+type Category {
+  id: ID!
+  name: String!
+  description: String
+  image: String
+  products: [Product!]!
+}
+
+# Product Review
+type Review {
+  id: ID!
+  product: Product!
+  user: User!
+  rating: Int!
+  title: String
+  content: String
+  createdAt: DateTime!
+}
+
+# Order
+type Order {
+  id: ID!
+  user: User!
+  items: [OrderItem!]!
+  subtotal: Float!
+  total: Float!
+  status: OrderStatus!
+  shippingAddress: Address!
+  paymentMethod: PaymentMethod!
+  paymentStatus: PaymentStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Order Item
+type OrderItem {
+  id: ID!
+  order: Order!
+  product: Product!
+  quantity: Int!
+  price: Float!
+}
+
+# Order Status Enum
+enum OrderStatus {
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+# Payment Method Enum
+enum PaymentMethod {
+  CREDIT_CARD
+  PAYPAL
+}
+
+# Payment Status Enum
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+# Cart
+type Cart {
+  id: ID!
+  user: User!
+  items: [CartItem!]!
+  subtotal: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Cart Item
+type CartItem {
+  id: ID!
+  cart: Cart!
+  product: Product!
+  quantity: Int!
+}
+
+# Authentication type
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+# Recommendation response
+type Recommendations {
+  products: [Product!]!
+}
+
+# Input Types
+input SignUpInput {
+  email: String!
+  password: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+  rememberMe: Boolean
+}
+
+input AddressInput {
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+  isDefault: Boolean
+}
+
+input ProfileInput {
+  firstName: String!
+  lastName: String!
+  phone: String
+  birthDate: String
+  address: AddressInput
+}
+
+input HealthProfileInput {
+  ageGroup: String!
+  activityLevel: String!
+  healthGoals: [String!]!
+  sleepHours: Float!
+  stressLevel: Int!
+  diet: String!
+  allergies: [String!]!
+}
+
+input CartItemInput {
+  productId: ID!
+  quantity: Int!
+}
+
+input OrderInput {
+  cartId: ID!
+  shippingAddressId: ID!
+  paymentMethod: PaymentMethod!
+  savePaymentMethod: Boolean
+}
+
+# Queries
+type Query {
+  # Auth
+  me: User @auth
+  
+  # Products
+  products(
+    category: String
+    tag: String
+    search: String
+    sortBy: String
+    limit: Int
+    offset: Int
+  ): [Product!]!
+  
+  product(id: ID!): Product
+  categories: [Category!]!
+  category(id: ID!): Category
+  
+  # Recommendations
+  recommendedProducts: Recommendations! @auth
+  
+  # Cart
+  cart: Cart @auth
+  
+  # Orders
+  orders: [Order!]! @auth
+  order(id: ID!): Order @auth
+}
+
+# Mutations
+type Mutation {
+  # Auth
+  signUp(input: SignUpInput!): AuthPayload!
+  signIn(input: SignInInput!): AuthPayload!
+  signOut: Boolean! @auth
+  
+  # Profile
+  updateProfile(input: ProfileInput!): User! @auth
+  
+  # Health Profile
+  createHealthProfile(input: HealthProfileInput!): HealthProfile! @auth
+  updateHealthProfile(input: HealthProfileInput!): HealthProfile! @auth
+  
+  # Cart
+  addToCart(input: CartItemInput!): Cart! @auth
+  updateCartItem(id: ID!, quantity: Int!): Cart! @auth
+  removeCartItem(id: ID!): Cart! @auth
+  clearCart: Cart! @auth
+  
+  # Checkout
+  createOrder(input: OrderInput!): Order! @auth
+  
+  # Reviews
+  createReview(productId: ID!, rating: Int!, title: String, content: String): Review! @auth
+}
+
+# Subscriptions
+type Subscription {
+  orderStatusChanged(orderId: ID!): Order! @auth
+}
