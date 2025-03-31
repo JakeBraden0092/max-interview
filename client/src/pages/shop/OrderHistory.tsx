@@ -16,7 +16,6 @@ interface Order {
   }>;
 }
 
-// Sample orders (in a real app, this would come from the GraphQL API)
 const sampleOrders: Order[] = [
   {
     id: 'ORD-2023-1001',
@@ -88,7 +87,6 @@ const OrderHistory: React.FC = () => {
       setIsLoading(true);
       
       try {
-        // In a real app, this would be a GraphQL query
         await new Promise(resolve => setTimeout(resolve, 1000));
         setOrders(sampleOrders);
       } catch (error) {

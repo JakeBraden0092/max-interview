@@ -123,13 +123,9 @@ const ProductList: React.FC = () => {
       setIsLoading(true);
       
       try {
-        // In a real app, this would be a GraphQL query
         await new Promise(resolve => setTimeout(resolve, 800));
-        
-        // Simulate personalized products based on user survey
+      
         if (user?.surveyCompleted) {
-          // In a real app, recommendations would come from the server
-          // based on user preferences
           setProducts(sampleProducts);
         } else {
           setProducts(sampleProducts);

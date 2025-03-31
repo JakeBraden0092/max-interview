@@ -263,8 +263,8 @@ describe('Authentication API', () => {
     });
 
     it('should respect rate limiting for failed login attempts', () => {
-      // Simulate multiple failed login attempts to trigger rate limiting
-      const MAX_ATTEMPTS = 5; // Adjust based on your API's rate limiting configuration
+      // Simulate multiple failed login attempts 
+      const MAX_ATTEMPTS = 5;
       
       const variables = {
         email: validUser.email,

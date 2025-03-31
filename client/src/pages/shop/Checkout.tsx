@@ -94,7 +94,6 @@ const Checkout: React.FC = () => {
       setIsSubmitting(true);
       
       try {
-        // In a real app, this would send an order to the server via GraphQL
         await new Promise(resolve => setTimeout(resolve, 1500));
         
         // Simulate a successful order

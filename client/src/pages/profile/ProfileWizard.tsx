@@ -118,7 +118,6 @@ mailingAddressLine1: Yup.string().when(['sameAsBilling'], {
       setIsSubmitting(true);
       
       try {
-        // In a real app, this would send data to the server via GraphQL
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Update user profile status
