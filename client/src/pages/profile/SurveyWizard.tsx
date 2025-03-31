@@ -148,21 +148,8 @@ const SurveyWizard: React.FC = () => {
   
   // Navigate to next question
   const goToNextQuestion = () => {
-    // Ensure current question has been answered
-    if (!answers[currentQuestion.id] && currentQuestion.type !== 'checkbox') {
-      return;
-    }
-    
-    if (currentQuestion.type === 'checkbox' && (!answers[currentQuestion.id] || answers[currentQuestion.id].length === 0)) {
-      // Initialize empty array for checkboxes if nothing selected
-      setAnswers({
-        ...answers,
-        [currentQuestion.id]: [],
-      });
-    }
-    
     if (currentQuestionIndex < surveyQuestions.length - 1) {
-      // Go to next question
+      // Always allow moving to the next question
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       window.scrollTo(0, 0);
     } else {
@@ -335,10 +322,7 @@ const SurveyWizard: React.FC = () => {
           <button
             type="button"
             onClick={goToNextQuestion}
-            disabled={
-              isSubmitting || 
-              (currentQuestion.type !== 'checkbox' && !answers[currentQuestion.id])
-            }
+            disabled={isSubmitting}
             className="ml-3 inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
             data-cy="next-button"
           >
