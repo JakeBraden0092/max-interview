@@ -18,9 +18,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["cypress", "node"]
   },
   "include": [
-    "src"
+    "src",
+    "postcss.config.js",
+    "tailwind.config.js",
+    "**/*.ts",
+    "cypress/support/types",
+    "cypress.d.ts"
   ]
 }

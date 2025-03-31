@@ -1,0 +1,61 @@
+{
+    "products": [
+      {
+        "id": "1",
+        "name": "Daily Multivitamin",
+        "description": "Comprehensive vitamin and mineral supplement for daily wellness.",
+        "price": 24.99,
+        "rating": 4.7,
+        "reviewCount": 128,
+        "image": "https://picsum.photos/seed/vitamin1/300/300",
+        "category": "Vitamins",
+        "tags": ["daily", "essential", "immunity"],
+        "ingredients": "Vitamin A, Vitamin C, Vitamin D, Vitamin E, B-complex vitamins, minerals",
+        "usage": "Take one capsule daily with food",
+        "benefits": [
+          "Supports overall health and wellness",
+          "Fills nutritional gaps in your diet",
+          "Promotes immune system function",
+          "Supports energy production"
+        ]
+      },
+      {
+        "id": "2",
+        "name": "Omega-3 Fish Oil",
+        "description": "High-quality omega-3 fatty acids for heart and brain health.",
+        "price": 19.99,
+        "rating": 4.5,
+        "reviewCount": 89,
+        "image": "https://picsum.photos/seed/omega3/300/300",
+        "category": "Supplements",
+        "tags": ["heart", "brain", "essential"],
+        "ingredients": "Fish oil concentrate, EPA, DHA, gelatin, glycerin, purified water",
+        "usage": "Take one softgel twice daily with meals",
+        "benefits": [
+          "Supports cardiovascular health",
+          "Promotes brain function and cognitive health",
+          "Helps reduce inflammation",
+          "Supports joint health"
+        ]
+      },
+      {
+        "id": "3",
+        "name": "Protein Powder",
+        "description": "Plant-based protein powder for muscle recovery and growth.",
+        "price": 39.99,
+        "rating": 4.8,
+        "reviewCount": 243,
+        "image": "https://picsum.photos/seed/protein/300/300",
+        "category": "Nutrition",
+        "tags": ["fitness", "muscle", "plant-based"],
+        "ingredients": "Pea protein, rice protein, hemp protein, natural flavors, stevia",
+        "usage": "Mix one scoop with 8-10 oz of water or plant milk",
+        "benefits": [
+          "Provides 25g of complete plant protein per serving",
+          "Supports muscle recovery and growth",
+          "Easy to digest",
+          "Free from common allergens"
+        ]
+      }
+    ]
+  }
