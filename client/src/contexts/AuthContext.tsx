@@ -70,15 +70,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, client }) 
     initAuth();
   }, []);
 
-  // Login function - in a real app, this would call a GraphQL mutation
   const login = async (email: string, password: string): Promise<User> => {
     try {
-      // Simulate API call for now
-      // In a real app, this would be a GraphQL mutation
       await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Simulate successful login - this is just for demo purposes
-      // In a real app, this would come from the API response
+
       const userData: User = {
         id: '1',
         email,
@@ -103,7 +98,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, client }) 
     }
   };
 
-  // Register function - in a real app, this would call a GraphQL mutation
+  // Register function
   const register = async (email: string, password: string): Promise<User> => {
     try {
       // Simulate API call

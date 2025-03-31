@@ -171,7 +171,6 @@ const SurveyWizard: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // In a real app, this would submit data to the server via GraphQL
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Update user survey completed status

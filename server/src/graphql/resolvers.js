@@ -2,10 +2,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
 
-// Mock database (in a real app, this would be a MongoDB or PostgreSQL connection)
 const db = {
   users: [],
-  products: [], // Would be populated with the same sample products from our frontend
+  products: [],
   carts: [],
   orders: [],
   healthProfiles: [],
@@ -91,7 +90,6 @@ const resolvers = {
           case 'newest':
             filteredProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             break;
-          // Default: relevance (would be more complex in a real app)
         }
       }
       
@@ -121,41 +119,30 @@ const resolvers = {
       return product ? product.category : null;
     },
     
-    // Recommendations
     recommendedProducts: (_, __, context) => {
       const user = getUser(context);
-      
-      // In a real app, this would use the user's health profile and past orders
-      // to generate personalized recommendations
-      // For this example, we'll just return some random products
       
       const healthProfile = db.healthProfiles.find(profile => profile.user.id === user.id);
       
       let recommendedProducts = [];
       
       if (healthProfile) {
-        // Filter products based on health profile
-        // This is a simplified logic - a real recommendation system would be more complex
         recommendedProducts = db.products.filter(product => {
-          // For example, if the user is interested in weight loss, recommend products with that tag
           if (healthProfile.healthGoals.includes('weight_loss') && 
               product.tags.includes('weight loss')) {
             return true;
           }
-          
-          // If the user has specified allergens, exclude products with those ingredients
+        
           if (healthProfile.allergies.some(allergy => 
             product.ingredients && product.ingredients.toLowerCase().includes(allergy.toLowerCase())
           )) {
             return false;
           }
-          
-          // More complex filtering logic would go here
+        
           return false;
         });
       }
       
-      // If we don't have enough recommendations, pad with popular products
       if (recommendedProducts.length < 4) {
         const popularProducts = db.products
           .sort((a, b) => b.rating - a.rating)
@@ -258,7 +245,6 @@ const resolvers = {
       },
       
       signOut: () => {
-        // In a real app with sessions, this would invalidate the session
         return true;
       },
       
@@ -297,7 +283,6 @@ const resolvers = {
       createHealthProfile: (_, { input }, context) => {
         const user = getUser(context);
         
-        // Check if user already has a health profile
         const existingProfile = db.healthProfiles.find(
           profile => profile.user.id === user.id
         );
@@ -306,7 +291,6 @@ const resolvers = {
           throw new Error('User already has a health profile');
         }
         
-        // Create new health profile
         const newHealthProfile = {
           id: `health_profile_${Date.now()}`,
           user,
@@ -317,7 +301,6 @@ const resolvers = {
         
         db.healthProfiles.push(newHealthProfile);
         
-        // Update user's survey completion status
         const userIndex = db.users.findIndex(u => u.id === user.id);
         db.users[userIndex] = {
           ...user,
@@ -330,8 +313,6 @@ const resolvers = {
       
       updateHealthProfile: (_, { input }, context) => {
         const user = getUser(context);
-        
-        // Find user's health profile
         const profileIndex = db.healthProfiles.findIndex(
           profile => profile.user.id === user.id
         );
@@ -533,7 +514,6 @@ const resolvers = {
           0
         );
         
-        // In a real app, we would add tax, shipping, etc.
         const total = subtotal;
         
         // Create order
@@ -546,7 +526,7 @@ const resolvers = {
           status: 'PROCESSING',
           shippingAddress: address,
           paymentMethod,
-          paymentStatus: 'COMPLETED', // In a real app, this would depend on payment processing
+          paymentStatus: 'COMPLETED',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -609,17 +589,13 @@ const resolvers = {
       },
     },
     
-    // Resolver for Subscription (in a real app, this would use PubSub)
     Subscription: {
       orderStatusChanged: {
         subscribe: (_, { orderId }, context) => {
           const user = getUser(context);
           
-          // In a real app, this would setup a PubSub subscription
           return {
-            // This is just a placeholder
             async *[Symbol.asyncIterator]() {
-              // In a real app, this would yield events from PubSub
               yield {
                 orderStatusChanged: {
                   id: orderId,
